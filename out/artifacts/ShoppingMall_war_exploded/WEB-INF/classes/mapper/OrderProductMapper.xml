@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.OrderProductDao">
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.OrderProduct">
+        <id column="order_id" property="order_id"/>
+        <result column="product_id" property="product_id"/>
+        <result column="product_name" property="product_name"/>
+        <result column="product_price" property="product_price"/>
+        <result column="product_picture" property="product_picture"/>
+        <result column="product_count" property="product_count"/>
+        <result column="product_total_price" property="product_total_price"/>
+        <result column="merchant_name" property="merchant_name"/>
+    </resultMap>
+
+    <insert id="submitOrderProduct">
+        insert into order_product(order_id,product_id,product_name,product_price,product_picture,product_count,product_total_price,merchant_name)
+        values(#{order_id},#{product.product_id},#{product.product_name},#{product.product_market_price},#{product.product_picture},#{product_count},#{product_count}*#{product.product_market_price},#{merchant_name})
+    </insert>
+
+    <select id="getOrderProduct" resultMap="result_map">
+        select * from order_product
+        where order_id=#{order_id}
+    </select>
+
+    <delete id="delete">
+        delete from order_product
+        where order_id=#{order_id}
+    </delete>
+</mapper>

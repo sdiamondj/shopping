@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.ProductDao">
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.Product">
+        <id column="product_id" property="product_id"/>
+        <result column="merchant_id" property="merchant_id"/>
+        <result column="merchant_name" property="merchant_name"/>
+        <result column="product_name" property="product_name"/>
+        <result column="product_category" property="product_category"/>
+        <result column="product_status" property="product_status"/>
+        <result column="product_market_price" property="product_market_price"/>
+        <result column="product_VIP_price" property="product_VIP_price"/>
+        <result column="product_inventory" property="product_inventory"/>
+        <result column="product_picture" property="product_picture" />
+        <result column="product_description" property="product_description"/>
+        <result column="product_comment_count" property="product_comment_count"/>
+        <result column="product_sell_count" property="product_sell_count"/>
+        <result column="product_addedTime" property="product_addedTime"/>
+    </resultMap>
+
+    <select id="getProductById" resultMap="result_map">
+        select * from product_info
+        where product_id=#{product_id}
+    </select>
+
+    <select id="getAllProduct" resultMap="result_map">
+        select * from product_info
+    </select>
+
+    <select id="getProductsByKey" resultMap="result_map">
+        select * from product_info
+        where product_name like '%${key}%' or merchant_id=#{keyId} or product_category like '%${key}%'
+    </select>
+
+    <update id="addProductSellCount">
+        update product_info
+        set product_sell_count=product_sell_count+1
+        where product_id=#{product_id}
+    </update>
+
+    <select id="getNew" resultMap="result_map">
+        select * from product_info
+        ORDER BY product_addedTime DESC limit 30
+    </select>
+
+    <select id="getHot" resultMap="result_map">
+        select * from product_info
+        order by product_sell_count DESC limit 30
+    </select>
+
+    <select id="getExpensive" resultMap="result_map">
+        select * from product_info
+        order by product_market_price DESC limit 30
+    </select>
+
+    <select id="getCheap" resultMap="result_map">
+        select * from product_info
+        order by product_market_price limit 30
+    </select>
+
+    <select id="getByMN" resultMap="result_map">
+        select * from product_info
+        where merchant_name=#{merchant_name}
+    </select>
+
+    <select id="getProductByMId" resultMap="result_map">
+        select * from product_info
+        where merchant_id=#{merchant_id}
+    </select>
+
+    <delete id="deleteProduct">
+        delete from product_info
+        where product_id=#{product_id}
+    </delete>
+
+    <update id="addProductCommentCount">
+        update product_info
+        set product_comment_count=product_comment_count+1
+        where product_id=#{product_id}
+    </update>
+
+    <update id="updateSth">
+        update product_info
+        set product_name=#{product_name},
+            product_market_price=#{product_price},
+            product_category=#{product_category},
+            product_description=#{product_description}
+        where product_id=#{product_id}
+    </update>
+
+    <insert id="addProduct">
+        insert into product_info(product_name,product_category,product_market_price,product_description,product_picture,merchant_id,merchant_name,product_subheading)
+        values(#{product_name},#{product_category},#{product_market_price},#{product_description},#{product_picture},#{merchant_id},#{merchant_name},#{product_subheading});
+    </insert>
+
+    <update id="updatePicture">
+        update product_info
+        set product_picture=#{product_picture}
+        where product_id=#{product_id}
+    </update>
+</mapper>

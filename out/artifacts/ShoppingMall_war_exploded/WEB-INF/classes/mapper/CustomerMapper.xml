@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.CustomerDao"><!--这里是类的Dao-->
+
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.Customer"><!--这里的type是实体类-->
+        <id column="customer_id" property="customer_id" /> <!--这是主键，其他的列用result-->
+        <result column="customer_name" property="customer_name"/>
+        <result column="customer_pwd" property="customer_pwd"/>
+        <result column="customer_trueName" property="customer_trueName"/>
+        <result column="customer_sex" property="customer_sex"/>
+        <result column="customer_age" property="customer_age"/>
+        <result column="customer_VIP" property="customer_VIP"/>
+        <result column="customer_phone" property="customer_phone"/>
+        <result column="customer_province" property="customer_province"/>
+        <result column="customer_city" property="customer_city"/>
+        <result column="customer_address" property="customer_address"/>
+        <result column="customer_regTime" property="customer_regTime"/>
+    </resultMap>
+
+    <select id="getCustomerByName" resultMap="result_map">
+        select * from customer_info
+        where customer_name=#{customer_name};
+    </select>
+
+    <select id="getCustomerById" resultMap="result_map">
+        select * from customer_info
+        where customer_id=#{customer_id}
+    </select>
+
+    <select id="customerLogin" resultMap="result_map">
+        select * from customer_info
+        where (customer_name=#{customer_name} and customer_pwd=#{customer_pwd})
+        or (customer_phone=#{customer_name} and customer_pwd=#{customer_pwd})
+    </select>
+
+    <select id="isRegistered" resultMap="result_map">
+        select * from customer_info
+        where customer_name=#{customer_sth} or customer_phone=#{customer_sth}
+    </select>
+
+    <insert id="customerRegister">
+        insert into customer_info(customer_name,customer_pwd,customer_phone)
+        values(#{customer_name},#{customer_pwd},#{customer_phone})
+    </insert>
+
+    <update id="updateSelfInfo">
+        update customer_info set
+        <if test='customer_pwd!=""'>customer_pwd=#{customer_pwd}</if>
+        <if test='customer_trueName!=""'>customer_trueName=#{customer_trueName}</if>
+        <if test='customer_sex!=""'>customer_sex=#{customer_trueName}</if>
+        <if test='customer_age!=""'>customer_age=#{customer_age}</if>
+        <if test='customer_phone!=""'>customer_phone=#{customer_phone}</if>
+        <if test='customer_province!=""'>customer_province=#{customer_province}</if>
+        <if test='customer_city!=""'>customer_city=#{customer_city}</if>
+        where customer_id=#{customer_id}
+    </update>
+
+    <update id="changeVIPStatus">
+        update customer_info
+        set customer_VIP=#{VIP} where customer_id=#{customer_id}
+    </update>
+
+    <select id="getAllCustomer" resultMap="result_map">
+        select * from customer_info
+    </select>
+
+    <select id="getAllVIP" resultMap="result_map">
+        select * from customer_info
+        where customer_VIP=2
+    </select>
+
+    <delete id="delete">
+        delete from customer_info
+        where customer_id=#{customer_id}
+    </delete>
+
+</mapper>

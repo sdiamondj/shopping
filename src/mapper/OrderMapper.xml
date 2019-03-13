@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.OrderDao">
+
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.Order">
+        <id column="order_id" property="order_id"/>
+        <result column="customer_id" property="customer_id"/>
+        <result column="order_generatedTime" property="order_generatedTime"/>
+        <result column="order_status" property="order_status"/>
+        <result column="fare" property="fare"/>
+        <result column="order_count" property="order_count"/>
+        <result column="order_address" property="order_address"/>
+        <result column="merchant_id" property="merchant_id"/>
+    </resultMap>
+
+    <select id="getOrderByCid" resultMap="result_map">
+        select * from order_info
+        where customer_id=#{customer_id}
+    </select>
+
+    <insert id="submitOrder">
+        insert into order_info(customer_id,order_count,order_address,merchant_id)
+        values(#{customer_id},#{order_count},#{order_address},#{merchant_id})
+    </insert>
+
+    <update id="addOrderPicture">
+        update order_info
+        set order_picture=#{order_picture}
+        where order_id=#{order_id}
+    </update>
+
+    <select id="getLastOrder" resultMap="result_map">
+        select * from order_info order by order_id desc LIMIT 1;
+    </select>
+
+    <select id="getOrderByStatus" resultMap="result_map">
+        select * from order_info
+        where customer_id=#{customer_id}<if test='status!=""'> and order_status=#{status}</if>
+    </select>
+
+    <select id="getOrder" resultMap="result_map">
+        select * from order_info
+        where order_id=#{order_id}
+    </select>
+
+    <update id="changeOrderStatus">
+        update order_info
+        set order_status=#{status}
+        where order_id=#{order_id}
+    </update>
+
+    <select id="getOrderByMId" resultMap="result_map">
+        select * from order_info
+        where merchant_id=#{merchant_id}
+    </select>
+
+    <select id="getOrderByStatusMerchant" resultMap="result_map">
+        select * from order_info
+        where merchant_id=#{merchant_id}<if test='status!=""'> and order_status=#{status}</if>
+    </select>
+
+    <select id="getAllOrder" resultMap="result_map">
+        select * from order_info
+    </select>
+
+    <delete id="delete">
+        delete from order_info
+        where order_id=#{order_id}
+    </delete>
+</mapper>

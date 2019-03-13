@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.AdminDao">
+
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.Admin"><!--这里的type是实体类-->
+    <id column="admin_id" property="admin_id" /> <!--这是主键，其他的列用result-->
+    <result column="admin_name" property="admin_name"/>
+    <result column="admin_pwd" property="admin_pwd"/>
+    </resultMap>
+
+    <select id="getAdminByName" resultMap="result_map">
+        select * from admin
+        where admin_name=#{admin_name};
+    </select>
+
+    <select id="getAdminById" resultMap="result_map">
+        select * from admin
+        where admin_id=#{admin_id}
+    </select>
+
+    <select id="adminLogin" resultMap="result_map">
+        select * from admin
+        where admin_name=#{admin_name} and admin_pwd=#{admin_pwd}
+    </select>
+
+</mapper>

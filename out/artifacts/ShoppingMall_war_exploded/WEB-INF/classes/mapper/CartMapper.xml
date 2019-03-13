@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.CartDao">
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.Cart">
+        <id column="cart_id" property="cart_id"/>
+        <result column="customer_id" property="customer_id"/>
+        <result column="product_id" property="product_id"/>
+        <result column="product_name" property="product_name"/>
+        <result column="product_price" property="product_price"/>
+        <result column="product_count" property="product_count"/>
+        <result column="product_total_price" property="product_total_price"/>
+        <result column="cart_generatedTime" property="cart_generatedTime"/>
+        <result column="cart_status" property="cart_status"/>
+    </resultMap>
+
+    <select id="isAdded" resultMap="result_map">
+        select * from cart_info
+        where customer_id=#{customer_id} and product_id=#{product_id}
+    </select>
+
+    <insert id="addToCart">
+        insert into cart_info(customer_id,product_id,product_name,product_price,product_picture,product_total_price,merchant_id)
+        values(#{customer_id},#{product.product_id},#{product.product_name},#{product.product_market_price},#{product.product_picture},#{product.product_market_price},#{merchant_id})
+    </insert>
+
+    <select id="getAllCart" resultMap="result_map">
+        select * from cart_info
+        where customer_id=#{customer_id}
+    </select>
+
+    <update id="updateCartCount">
+        update cart_info
+        set product_count=#{product_count}, product_total_price=#{product_total_price}
+        where cart_id = #{cart_id}
+    </update>
+
+    <delete id="deleteCart">
+        delete from cart_info
+        where customer_id=#{customer_id}
+    </delete>
+
+    <delete id="deleteFromCart">
+        delete from cart_info
+        where cart_id=#{cart_id}
+    </delete>
+
+</mapper>

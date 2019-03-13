@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.MerchantDao">
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.Merchant">
+        <id column="merchant_id" property="merchant_id"/>
+        <result column="merchant_name" property="merchant_name"/>
+        <result column="merchant_pwd" property="merchant_pwd"/>
+        <result column="merchant_phone" property="merchant_phone"/>
+        <result column="merchant_province" property="merchant_province"/>
+        <result column="merchant_address" property="merchant_address" />
+        <result column="merchant_category" property="merchant_category"/>
+        <result column="merchant_status" property="merchant_status"/>
+        <result column="merchant_regTime" property="merchant_regTime"/>
+    </resultMap>
+
+    <select id="getMerchantByName" resultMap="result_map">
+        select * from merchant_info
+        where merchant_name like '%${merchant_name}%'
+    </select>
+
+    <select id="getMerchantById" resultMap="result_map">
+        select * from merchant_info
+        where merchant_id =#{merchant_id}
+    </select>
+
+    <select id="getAllMerchants" resultMap="result_map">
+        select * from merchant_info
+    </select>
+
+    <select id="getMerchantByCategory" resultMap="result_map">
+        select * from merchant_info
+        where merchant_category=#{merchant_category}
+    </select>
+
+    <select id="merchantLogin" resultMap="result_map">
+        select * from merchant_info
+        where (merchant_id=#{merchant_id} and merchant_pwd=#{merchant_pwd})
+        or (merchant_phone=#{merchant_id} and merchant_pwd=#{merchant_pwd})
+    </select>
+
+    <select id="getMerchantByPhone" resultMap="result_map">
+        select * from merchant_info
+        where merchant_phone=#{merchant_phone}
+    </select>
+
+    <insert id="merchantRegister">
+        insert into merchant_info(merchant_name,merchant_pwd,merchant_phone,merchant_category)
+        values(#{merchant_name},#{merchant_pwd},#{merchant_phone},#{merchant_category})
+    </insert>
+
+    <delete id="deleteMerchant">
+        delete from merchant_info
+        where merchant_id=#{merchant_id}
+    </delete>
+
+    <update id="updateInfo">
+        update merchant_info
+        set merchant_name=#{merchant_name},merchant_pwd=#{merchant_pwd},merchant_category=#{merchant_category}
+        where merchant_id=#{merchant_id}
+    </update>
+
+    <update id="changeStatus">
+        update merchant_info
+        set merchant_status=#{status}
+        where merchant_id=#{merchant_id}
+    </update>
+
+</mapper>

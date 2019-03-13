@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ncu.shopping.dao.VipPostDao">
+    <resultMap id="result_map" type="cn.edu.ncu.shopping.entity.VipPost">
+        <result column="customer_id" property="customer_id"/>
+        <result column="customer_name" property="customer_name"/>
+        <result column="post_title" property="post_title"/>
+        <result column="post_content" property="post_content"/>
+        <result column="post_time" property="post_time"/>
+    </resultMap>
+
+    <insert id="addPost">
+        insert into vip_post(customer_id, customer_name, post_title, post_content)
+        values(#{customer_id},#{customer_name},#{post_title},#{post_content})
+    </insert>
+
+    <select id="getAllPost" resultMap="result_map">
+        select *
+        from vip_post;
+    </select>
+</mapper>
